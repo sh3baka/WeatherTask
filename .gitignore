@@ -1,0 +1,15 @@
+target
+*.log
+.*
+*.iml
+.idea
+.DS_Store
+!.gitignore
+bin*
+build*
+!build.gradle
+.svn
+*.class
+.classpath
+.project
+.settings
