@@ -1,0 +1,58 @@
+0. Create a GitHub account (if not done yet). Create an open Git repository there. Share with the team.
+ * Use master or develop branch for integration and separate branch for each of developers
+ * Use meaningful commit messages
+ * Complete tasks\features iteratively, 1 feature = 1 commit.
+
+ 
+
+1. Check out one of the provided free external APIs.
+ * Use one  of these APIs:
+  - https://aviationstack.com/
+  - https://fcsapi.com/
+  - https://openweathermap.org/
+ * You'll probably need to register to get apikey/appid to be able to call your free external API
+ * Beware of limitation of free API, most will limit number of calls per minute, so don't spam too much.
+ * Try to send some get requests in your browser to check that result is coming back. In provided APIs, data should change over time.
+ 
+2. Create a Spring Boot service (use Java and maven).
+    * https://start.spring.io/ can be used for quick creation 
+ 
+3. Create GET endpoint/endpoints
+ * Use data from external API for you GET endpoint (your service has to call external API with correct apikey). 
+ * Figure out which part of data you want to return from your endpoint, don’t return same information as in external API.
+ * Try to decompose your logic so that it can be described by several classes/architecture layers. Do not write all of your code in the same class.
+ * Try to use both query and path parameters.
+ * Test your endpoints with Postman or other REST clients.
+ * Use JSON type
+
+ 
+
+4. Create POST endpoints 
+ * Endpoints should consume some body and store data in runtime inside your service.
+ * Validation of input params/POST body is required. 
+
+ 
+
+5. Setup local H2 for data storage(instead of saving data in runtime) 
+ * Database should be used to store date received from POST endpoints.
+ * Create simple entity class with auto-generated key
+ * Create simple spring repository to save your entity
+ * Use in-memory H2 DB to save your data
+ * Configure console access to H2 (make sure you can access it from browser)
+ 
+6. Setup up cache and CRON job
+ * Set up cache using spring solutions, so that when you need information from external API, you first check if data is already in cache. If data is in cache use that, otherwise call external API, save data to cache.
+ * Setup scheduled job (CRON job) to run every 5min. Job should call external API and update data in cache.
+ * Make cron schedule configurable from properties file
+ 
+6. Cover your functionality with unit and integration tests.
+ 
+7. Create swagger file for your service.
+ 
+8. Take care of proper error handling.
+ * In case of invalid input params service should provide meaningful error.
+ 
+9. Add proper logging to your functionality. 
+ * Optionally you can write logs into file.
+ 
+10. Be ready to present your service.
