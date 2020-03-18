@@ -9,14 +9,16 @@ import org.springframework.web.client.RestTemplate;
 @Service
 public class ExternalApiService {
 
+    private final String UNITS = "metric";
+
     @Value("${api.key}")
     private String apiKey;
 
     @Autowired
     private RestTemplate restTemplate;
 
-    public ResponseEntity<String> callApiToGetWeatherByCity(String city){
-        String getWeatherByCityUrl = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + apiKey;
+    public ResponseEntity<String> callApiToGetWeatherByCity(String city) {
+        String getWeatherByCityUrl = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&units=" + UNITS + "&appid=" + apiKey;
         return restTemplate.getForEntity(getWeatherByCityUrl, String.class);
     }
 
