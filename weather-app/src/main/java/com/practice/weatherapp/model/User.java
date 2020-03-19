@@ -4,14 +4,19 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.Size;
 
 @Entity
 public class User {
     @Id
     @GeneratedValue
     private Long id;
+    @Size(min = 1, message = "UserName should be atleast 1 char long")
     private String userName;
+    @Size(min = 1, message = "Name should be atleast 1 char long")
     private String name;
+    @Size(min = 1, message = "Surname should be atleast 1 char long")
     private String surname;
     @OneToOne
     private Location location;

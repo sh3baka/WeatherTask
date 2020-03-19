@@ -1,6 +1,8 @@
 package com.practice.weatherapp.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.practice.weatherapp.Exception.CityNotFoundException;
+import com.practice.weatherapp.Exception.UserNotFoundException;
 import com.practice.weatherapp.model.CurrentWeather;
 import com.practice.weatherapp.wrapper.RestResponseWrapper;
 import org.slf4j.Logger;
@@ -36,10 +38,7 @@ public class ExternalApiService {
             logger.info("Making a call to external weather API");
             jsonNode = restTemplate.getForObject(getWeatherByCityUrl, JsonNode.class);
         } catch (HttpClientErrorException e) {
-            logger.error("There was an error when making a call to external weather API: {}",
-                    e.getResponseBodyAsString());
-            return new ResponseEntity<>(new RestResponseWrapper(currentWeather, e.getResponseBodyAsString()),
-                    HttpStatus.valueOf(e.getRawStatusCode()));
+            throw new CityNotFoundException("City " + city + " not found");
         }
 
         currentWeather = mapJsonToCurrentWeather(jsonNode);
