@@ -2,11 +2,13 @@ package com.practice.weatherapp.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.practice.weatherapp.model.CurrentWeather;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 @Service
@@ -20,11 +22,28 @@ public class ExternalApiService {
     @Autowired
     private RestTemplate restTemplate;
 
-    public ResponseEntity<CurrentWeather> callApiToGetWeatherByCity(String city) {
-        String getWeatherByCityUrl = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&units=" + UNITS + "&appid=" + apiKey;
-        JsonNode jsonNode = restTemplate.getForObject(getWeatherByCityUrl, JsonNode.class);
+    @Autowired
+    private Logger logger;
 
-        CurrentWeather currentWeather = mapJsonToCurrentWeather(jsonNode);
+    public ResponseEntity<CurrentWeather> callApiToGetWeatherByCity(String city) {
+        JsonNode jsonNode;
+        CurrentWeather currentWeather = null;
+
+        String getWeatherByCityUrl = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&units=" + UNITS + "&appid=" + apiKey;
+
+        try {
+            logger.info("Making a call to external weather API");
+            jsonNode = restTemplate.getForObject(getWeatherByCityUrl, JsonNode.class);
+        } catch (HttpClientErrorException e) {
+            logger.error(e.getMessage());
+            return new ResponseEntity<>(HttpStatus.valueOf(e.getRawStatusCode()));
+        }
+
+        if(jsonNode != null){
+            currentWeather = mapJsonToCurrentWeather(jsonNode);
+        } else {
+            logger.warn("External weather API response was empty");
+        }
 
         return new ResponseEntity<>(currentWeather, HttpStatus.OK);
     }
