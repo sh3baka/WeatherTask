@@ -21,11 +21,18 @@ public class ExternalApiService {
     private RestTemplate restTemplate;
 
     public ResponseEntity<CurrentWeather> callApiToGetWeatherByCity(String city) {
-
         String getWeatherByCityUrl = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&units=" + UNITS + "&appid=" + apiKey;
         JsonNode jsonNode = restTemplate.getForObject(getWeatherByCityUrl, JsonNode.class);
 
-        CurrentWeather currentWeather = new CurrentWeather.Builder()
+        CurrentWeather currentWeather = mapJsonToCurrentWeather(jsonNode);
+
+        return new ResponseEntity<>(currentWeather, HttpStatus.OK);
+    }
+
+    /*auxiliary methods*/
+
+    private CurrentWeather mapJsonToCurrentWeather(JsonNode jsonNode) {
+        return new CurrentWeather.Builder()
                 .mainWeather(jsonNode.get("weather").get(0).get("main").asText())
                 .mainWeatherDescription(jsonNode.get("weather").get(0).get("description").asText())
                 .temperature(jsonNode.get("main").get("temp").asInt())
@@ -34,8 +41,6 @@ public class ExternalApiService {
                 .windDirectionDeg(jsonNode.get("wind").get("deg").asInt())
                 .cloudinessPercentage(jsonNode.get("clouds").get("all").asInt())
                 .build();
-
-        return new ResponseEntity<>(currentWeather, HttpStatus.OK);
     }
 
 }
