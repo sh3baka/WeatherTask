@@ -2,6 +2,7 @@ package com.practice.weatherapp.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.practice.weatherapp.model.CurrentWeather;
+import com.practice.weatherapp.wrapper.RestResponseWrapper;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,7 +26,7 @@ public class ExternalApiService {
     @Autowired
     private Logger logger;
 
-    public ResponseEntity<CurrentWeather> callApiToGetWeatherByCity(String city) {
+    public ResponseEntity<RestResponseWrapper> callApiToGetWeatherByCity(String city) {
         JsonNode jsonNode;
         CurrentWeather currentWeather = null;
 
@@ -35,17 +36,15 @@ public class ExternalApiService {
             logger.info("Making a call to external weather API");
             jsonNode = restTemplate.getForObject(getWeatherByCityUrl, JsonNode.class);
         } catch (HttpClientErrorException e) {
-            logger.error(e.getMessage());
-            return new ResponseEntity<>(HttpStatus.valueOf(e.getRawStatusCode()));
+            logger.error("There was an error when making a call to external weather API: {}",
+                    e.getResponseBodyAsString());
+            return new ResponseEntity<>(new RestResponseWrapper(currentWeather, e.getResponseBodyAsString()),
+                    HttpStatus.valueOf(e.getRawStatusCode()));
         }
 
-        if(jsonNode != null){
-            currentWeather = mapJsonToCurrentWeather(jsonNode);
-        } else {
-            logger.warn("External weather API response was empty");
-        }
+        currentWeather = mapJsonToCurrentWeather(jsonNode);
 
-        return new ResponseEntity<>(currentWeather, HttpStatus.OK);
+        return new ResponseEntity<>(new RestResponseWrapper(currentWeather, "success"), HttpStatus.OK);
     }
 
     /*auxiliary methods*/
