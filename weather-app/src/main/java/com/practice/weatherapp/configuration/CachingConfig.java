@@ -1,6 +1,7 @@
 package com.practice.weatherapp.configuration;
 
 import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
 import org.springframework.context.annotation.Bean;
@@ -14,4 +15,8 @@ public class CachingConfig {
     public CacheManager cacheManager() {
         return new ConcurrentMapCacheManager("weatherApi");
     }
+
+    @Bean
+    @CacheEvict(value = "weatherApi", allEntries = true)
+    public void clearingWeatherApicache(){ }
 }

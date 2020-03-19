@@ -1,9 +1,8 @@
 package com.practice.weatherapp.service;
 
+import com.practice.weatherapp.configuration.CachingConfig;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.CacheManager;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -19,17 +18,11 @@ public class CacheShedulerService {
     private ExternalApiService externalApiService;
 
     @Autowired
-    private
-    CacheManager cacheManager;
-
-    @CacheEvict(value = "weatherApi", allEntries = true)
-    private void clearingWeatherApicache(){
-        logger.info("Evicting all entries from weatherApi cache");
-    }
+    private CachingConfig cachingConfig;
 
     @Scheduled(cron = "${caching.cron.timer}")
     public void scheduleCachingNewApiData(){
-        clearingWeatherApicache();
+        cachingConfig.clearingWeatherApicache();
         logger.info("Getting new cache:");
         externalApiService.callApiToGetWeatherByCity("riga");
         externalApiService.callApiToGetWeatherByCity("stavanger");
