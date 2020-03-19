@@ -1,4 +1,4 @@
-package com.practice.weatherapp;
+package com.practice.weatherapp.model;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
