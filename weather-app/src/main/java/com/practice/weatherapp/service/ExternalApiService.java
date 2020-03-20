@@ -33,7 +33,7 @@ public class ExternalApiService {
         CurrentWeather currentWeather = null;
 
         String getWeatherByCityUrl =
-                "http://api.openweathermap.org/data/2.5/weather?q=" + city.toLowerCase() + "&units=" + UNITS +
+                "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&units=" + UNITS +
                         "&appid=" + apiKey;
 
         try {

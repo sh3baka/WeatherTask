@@ -18,5 +18,5 @@ public class CachingConfig {
 
     @Bean
     @CacheEvict(value = "weatherApi", allEntries = true)
-    public void clearingWeatherApicache(){ }
+    public void clearingWeatherApiCache(){ }
 }
