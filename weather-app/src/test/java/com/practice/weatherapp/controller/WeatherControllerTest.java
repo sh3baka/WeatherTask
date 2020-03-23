@@ -15,9 +15,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.util.NestedServletException;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(SpringExtension.class)
@@ -44,6 +43,8 @@ class WeatherControllerTest {
         mockMvc.perform(MockMvcRequestBuilders
                 .get("/weather/london")
                 .accept(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.currentWeather").isNotEmpty())
+                .andExpect(jsonPath("$.message").isNotEmpty())
                 .andExpect(status().isOk());
     }
 
@@ -60,15 +61,16 @@ class WeatherControllerTest {
         mockMvc.perform(MockMvcRequestBuilders
                 .get("/weather/user/johnny2")
                 .accept(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.currentWeather").isNotEmpty())
+                .andExpect(jsonPath("$.message").isNotEmpty())
                 .andExpect(status().isOk());
     }
 
     @Test
-    void getWeatherByUserIsNotFound() {
-        assertThrows(NestedServletException.class, () -> mockMvc.perform(MockMvcRequestBuilders
+    void getWeatherByUserIsNotFound() throws Exception {
+         mockMvc.perform(MockMvcRequestBuilders
                 .get("/weather/user/johnny23")
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound())
-        );
+                .andExpect(status().isNotFound());
     }
 }
