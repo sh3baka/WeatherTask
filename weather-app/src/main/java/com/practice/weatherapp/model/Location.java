@@ -3,13 +3,16 @@ package com.practice.weatherapp.model;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class Location {
     @Id
     @GeneratedValue
     private Long id;
+    @NotNull(message = "Country cannot be empty")
     private String country;
+    @NotNull(message = "City cannot be empty")
     private String city;
 
     public Location(Long id, String country, String city) {
