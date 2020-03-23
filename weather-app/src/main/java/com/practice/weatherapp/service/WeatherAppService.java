@@ -1,5 +1,6 @@
 package com.practice.weatherapp.service;
 
+import com.practice.weatherapp.Exception.UserNotFoundException;
 import com.practice.weatherapp.model.User;
 import com.practice.weatherapp.repository.UserRepository;
 import org.slf4j.Logger;
@@ -21,7 +22,7 @@ public class WeatherAppService {
 
         if(user == null){
             logger.error("User {} not found", userName);
-            return null;
+            throw new UserNotFoundException(userName);
         }
         return user.getLocation().getCity();
     }
