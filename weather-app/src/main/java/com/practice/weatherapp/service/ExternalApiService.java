@@ -8,6 +8,7 @@ import com.practice.weatherapp.wrapper.RestResponseWrapper;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -28,14 +29,17 @@ public class ExternalApiService {
     @Autowired
     private Logger logger;
 
+    @Cacheable("weatherApi")
     public ResponseEntity<RestResponseWrapper> callApiToGetWeatherByCity(String city) {
         JsonNode jsonNode;
         CurrentWeather currentWeather = null;
 
-        String getWeatherByCityUrl = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&units=" + UNITS + "&appid=" + apiKey;
+        String getWeatherByCityUrl =
+                "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&units=" + UNITS +
+                        "&appid=" + apiKey;
 
         try {
-            logger.info("Making a call to external weather API");
+            logger.info("Making a call to external weather API - city: {}", city.toLowerCase());
             jsonNode = restTemplate.getForObject(getWeatherByCityUrl, JsonNode.class);
         } catch (HttpClientErrorException e) {
             throw new CityNotFoundException("City " + city + " not found");
