@@ -4,8 +4,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
-import javax.validation.constraints.Digits;
 import javax.validation.constraints.Size;
+import java.util.Objects;
 
 @Entity
 public class User {
@@ -20,6 +20,23 @@ public class User {
     private String surname;
     @OneToOne
     private Location location;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return id.equals(user.id) &&
+                userName.equals(user.userName) &&
+                name.equals(user.name) &&
+                surname.equals(user.surname) &&
+                location.equals(user.location);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, userName, name, surname, location);
+    }
 
     public User(Long id, String userName, String name, String surname, Location location) {
         this.id = id;
