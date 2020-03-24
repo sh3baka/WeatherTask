@@ -11,18 +11,12 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.net.URI;
-import java.util.List;
 
 @RestController
 public class UserController {
 
     @Autowired
     private UserRepository userRepository;
-
-    @GetMapping("/user")
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
-    }
 
     @GetMapping("/user/{name}")
     public User getByUsername(@PathVariable String name) throws UserNotFoundException {
