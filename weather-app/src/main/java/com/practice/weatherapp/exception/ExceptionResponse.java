@@ -1,4 +1,4 @@
-package com.practice.weatherapp.Exception;
+package com.practice.weatherapp.exception;
 
 import java.util.Date;
 

@@ -1,8 +1,7 @@
 package com.practice.weatherapp.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.practice.weatherapp.Exception.CityNotFoundException;
-import com.practice.weatherapp.Exception.UserNotFoundException;
+import com.practice.weatherapp.exception.CityNotFoundException;
 import com.practice.weatherapp.model.CurrentWeather;
 import com.practice.weatherapp.wrapper.RestResponseWrapper;
 import org.slf4j.Logger;
@@ -18,7 +17,7 @@ import org.springframework.web.client.RestTemplate;
 @Service
 public class ExternalApiService {
 
-    private final String UNITS = "metric";
+    private final static String UNITS = "metric";
 
     @Value("${api.key}")
     private String apiKey;

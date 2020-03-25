@@ -1,6 +1,6 @@
 package com.practice.weatherapp.controller;
 
-import com.practice.weatherapp.Exception.UserNotFoundException;
+import com.practice.weatherapp.exception.UserNotFoundException;
 import com.practice.weatherapp.model.User;
 import com.practice.weatherapp.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ public class UserController {
     private UserRepository userRepository;
 
     @GetMapping("/user/{name}")
-    public User getByUsername(@PathVariable String name) throws UserNotFoundException {
+    public User getByUsername(@PathVariable String name) {
         User user = userRepository.findByName(name);
         if (user == null)
             throw new UserNotFoundException("User " + name + " not found");

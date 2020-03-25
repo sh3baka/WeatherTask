@@ -1,6 +1,6 @@
 package com.practice.weatherapp.service;
 
-import com.practice.weatherapp.Exception.UserNotFoundException;
+import com.practice.weatherapp.exception.UserNotFoundException;
 import com.practice.weatherapp.model.User;
 import com.practice.weatherapp.repository.UserRepository;
 import org.slf4j.Logger;

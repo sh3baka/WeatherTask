@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
+
 @RestController
 @RequestMapping("/weather")
 public class WeatherController {
@@ -24,13 +26,13 @@ public class WeatherController {
     @Autowired
     private Logger logger;
 
-    @RequestMapping("/{city}")
+    @RequestMapping(value = "/{city}", method = GET)
     public ResponseEntity<RestResponseWrapper> getWeatherByCity(@PathVariable("city") String city) {
         logger.info("Making a call to getWeatherByCity endpoint with parameters - city: {}", city);
         return externalApiService.callApiToGetWeatherByCity(city);
     }
 
-    @RequestMapping("/user/{userName}")
+    @RequestMapping(value = "/user/{userName}", method = GET)
     public ResponseEntity<RestResponseWrapper> getWeatherByUser(@PathVariable("userName") String userName) {
         logger.info("Making a call to getWeatherByUser endpoint with parameters - userName: {}", userName);
         String city = weatherAppService.getCityByUserName(userName);
